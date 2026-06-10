@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sushi Showdown - Japanese Themed Multiplayer Shooter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Home Screen -->
+    <div id="homeScreen" class="screen active">
+        <div class="home-container">
+            <h1 class="title">🍣 Sushi Showdown 🍣</h1>
+            <p class="subtitle">A Japanese-Themed Multiplayer Adventure</p>
+            
+            <div class="home-menu">
+                <button class="btn btn-large" onclick="navigateTo('characterSelect')">
+                    <span class="emoji">🎮</span> Play Game
+                </button>
+                <button class="btn btn-large" onclick="navigateTo('shop')">
+                    <span class="emoji">🛍️</span> Cosmetics Shop
+                </button>
+                <button class="btn btn-large" onclick="navigateTo('serverSelect')">
+                    <span class="emoji">🖥️</span> Server Select
+                </button>
+                <button class="btn btn-large" onclick="navigateTo('settings')">
+                    <span class="emoji">⚙️</span> Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Select Screen -->
+    <div id="characterSelect" class="screen">
+        <div class="character-select-container">
+            <h2>Select Your Sushi Character</h2>
+            <div class="character-grid">
+                <div class="character-card" onclick="selectCharacter('nigiri')">
+                    <div class="character-visual nigiri"></div>
+                    <h3>Nigiri</h3>
+                    <p>Speed & Agility</p>
+                </div>
+                <div class="character-card" onclick="selectCharacter('roll')">
+                    <div class="character-visual roll"></div>
+                    <h3>Rainbow Roll</h3>
+                    <p>Balanced Fighter</p>
+                </div>
+                <div class="character-card" onclick="selectCharacter('tempura')">
+                    <div class="character-visual tempura"></div>
+                    <h3>Tempura</h3>
+                    <p>Tank & Power</p>
+                </div>
+                <div class="character-card" onclick="selectCharacter('maki')">
+                    <div class="character-visual maki"></div>
+                    <h3>Maki</h3>
+                    <p>Sniper Expert</p>
+                </div>
+            </div>
+            <div class="selected-character" id="selectedCharInfo">
+                <p>Select a character to continue</p>
+            </div>
+            <button class="btn" onclick="navigateTo('mapSelect')">Continue</button>
+            <button class="btn btn-secondary" onclick="navigateTo('homeScreen')">Back</button>
+        </div>
+    </div>
+
+    <!-- Map Select Screen -->
+    <div id="mapSelect" class="screen">
+        <div class="map-select-container">
+            <h2>Select Your Battleground</h2>
+            <div class="map-grid">
+                <div class="map-card" onclick="selectMap('temple')">
+                    <div class="map-preview temple"></div>
+                    <h3>Sacred Temple</h3>
+                    <p>Medium | Balanced</p>
+                </div>
+                <div class="map-card" onclick="selectMap('market')">
+                    <div class="map-preview market"></div>
+                    <h3>Floating Market</h3>
+                    <p>Large | Urban</p>
+                </div>
+                <div class="map-card" onclick="selectMap('mountain')">
+                    <div class="map-preview mountain"></div>
+                    <h3>Mountain Shrine</h3>
+                    <p>Large | Sniper-Friendly</p>
+                </div>
+                <div class="map-card" onclick="selectMap('dojo')">
+                    <div class="map-preview dojo"></div>
+                    <h3>Training Dojo</h3>
+                    <p>Small | Close Combat</p>
+                </div>
+            </div>
+            <button class="btn" onclick="startGame()">Start Battle</button>
+            <button class="btn btn-secondary" onclick="navigateTo('characterSelect')">Back</button>
+        </div>
+    </div>
+
+    <!-- Shop Screen -->
+    <div id="shop" class="screen">
+        <div class="shop-container">
+            <h2>🛍️ Cosmetics Shop</h2>
+            <div class="shop-currency">
+                <span class="coins">💰 Coins: <span id="coinDisplay">1000</span></span>
+            </div>
+            
+            <div class="shop-tabs">
+                <button class="tab-btn active" onclick="filterShop('skins')">Skins</button>
+                <button class="tab-btn" onclick="filterShop('weapons')">Weapon Skins</button>
+                <button class="tab-btn" onclick="filterShop('effects')">Effects</button>
+            </div>
+
+            <div class="shop-grid" id="shopGrid">
+                <!-- Populated by JavaScript -->
+            </div>
+            <button class="btn" onclick="navigateTo('homeScreen')">Back</button>
+        </div>
+    </div>
+
+    <!-- Server Select Screen -->
+    <div id="serverSelect" class="screen">
+        <div class="server-container">
+            <h2>🖥️ Select Server</h2>
+            <div class="server-list" id="serverList">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div class="server-input">
+                <h3>Host Your Own Server</h3>
+                <input type="text" id="customServerUrl" placeholder="Enter server URL (e.g., ws://localhost:8080)">
+                <button class="btn" onclick="connectCustomServer()">Connect</button>
+            </div>
+            <button class="btn btn-secondary" onclick="navigateTo('homeScreen')">Back</button>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings" class="screen">
+        <div class="settings-container">
+            <h2>⚙️ Settings</h2>
+            <div class="settings-group">
+                <label>Master Volume</label>
+                <input type="range" min="0" max="100" value="70" id="volumeControl">
+            </div>
+            <div class="settings-group">
+                <label>Mouse Sensitivity</label>
+                <input type="range" min="0.1" max="2" step="0.1" value="1" id="sensitivityControl">
+            </div>
+            <div class="settings-group">
+                <label>
+                    <input type="checkbox" id="showFPS"> Show FPS Counter
+                </label>
+            </div>
+            <div class="settings-group">
+                <label>Username</label>
+                <input type="text" id="usernameInput" placeholder="Enter your username" maxlength="20">
+            </div>
+            <button class="btn" onclick="saveSettings()">Save Settings</button>
+            <button class="btn btn-secondary" onclick="navigateTo('homeScreen')">Back</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="screen">
+        <canvas id="gameCanvas"></canvas>
+        <div id="gameHUD">
+            <div class="hud-top">
+                <div class="player-health">
+                    <span>HP: <span id="healthValue">100</span>/100</span>
+                    <div class="health-bar">
+                        <div class="health-fill" id="healthFill"></div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <span id="playerName">Loading...</span>
+                </div>
+                <div class="ammo-display">
+                    <span id="ammoCount">30/120</span>
+                    <div class="reload-indicator" id="reloadIndicator"></div>
+                </div>
+            </div>
+            <div class="hud-bottom">
+                <canvas id="miniMap" width="200" height="200"></canvas>
+                <div class="player-list" id="playerList"></div>
+            </div>
+            <div class="game-menu-toggle">
+                <button onclick="toggleGameMenu()" class="menu-btn">Menu (ESC)</button>
+            </div>
+        </div>
+
+        <!-- Game Pause Menu -->
+        <div id="gameMenu" class="game-menu hidden">
+            <div class="menu-content">
+                <h2>Paused</h2>
+                <button class="btn" onclick="resumeGame()">Resume Game</button>
+                <button class="btn" onclick="navigateTo('homeScreen')">Return to Home</button>
+                <button class="btn btn-secondary" onclick="toggleGameMenu()">Close Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="screen hidden">
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <p id="loadingText">Connecting to server...</p>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script src="networking.js"></script>
+    <script src="ui.js"></script>
+</body>
+</html>
